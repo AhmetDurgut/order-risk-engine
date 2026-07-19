@@ -137,8 +137,13 @@ CLASS zcl_order_risk_checker IMPLEMENTATION.
       END OF ty_credit_mock,
       ty_credit_mock_tab TYPE STANDARD TABLE OF ty_credit_mock WITH EMPTY KEY.
 
-    " SELECT SINGLE klimk FROM knkk INTO @DATA(lv_credit_limit) WHERE kunnr = @iv_kunnr.
+    " S/4HANA (SAP Credit Management / FSCM):
+    " SELECT SINGLE credit_limit FROM ukmbp_cms_sgm INTO @DATA(lv_credit_limit)
+    "   WHERE partner = @iv_kunnr AND credit_sgmnt = @lv_credit_segment.
     " SELECT SUM( dmbtr ) FROM bsid INTO @DATA(lv_open_balance) WHERE kunnr = @iv_kunnr.
+    "
+    " Classic ECC used KNKK-KLIMK for the credit limit; that table is no longer
+    " populated in S/4HANA, so FSCM is the correct source there.
 
     DATA(lt_credit_mock) = VALUE ty_credit_mock_tab(
       ( kunnr = '0000100000' credit_limit = '50000.00' open_balance = '10000.00' )
